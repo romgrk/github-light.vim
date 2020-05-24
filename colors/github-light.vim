@@ -170,9 +170,9 @@ call hi#('ColorColumn',      '',              theme.bg_widget, '')
 call hi#('IndentGuidesEven', theme.fg_widget, '', '')
 call hi#('IndentGuidesOdd',  theme.fg_widget, '', '')
 
-call hi#('TabLine',          s:white,       s:black1, '')
-call hi#('TabLineSel',       s:gh_link,     s:black1)
-call hi#('TabLineFill',      'none',        s:black1, '')
+call hi#('TabLine',          s:white,       s:black1, 'bold')
+call hi#('TabLineSel',       s:gh_link,     s:black1, 'bold')
+call hi#('TabLineFill',      'none',        s:black1, 'bold')
 
 let s:bg_current = theme.bg
 let s:bg_visible = theme.bg_subtle
