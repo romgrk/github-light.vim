@@ -12,8 +12,6 @@ function! s:_ (name, ...)
   let bg = ''
   let attr = ''
 
-  echom a:name
-  echom a:000
   if type(a:1) == 3
     let fg   = get(a:1, 0, '')
     let bg   = get(a:1, 1, '')
