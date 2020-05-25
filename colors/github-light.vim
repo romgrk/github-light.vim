@@ -6,6 +6,37 @@ end
 
 let colors_name = 'github-light'
 
+" Highlighting function
+function! s:_ (name, ...)
+  let fg = ''
+  let bg = ''
+  let attr = ''
+
+  echom a:name
+  echom a:000
+  if type(a:1) == 3
+    let fg   = get(a:1, 0, '')
+    let bg   = get(a:1, 1, '')
+    let attr = get(a:1, 2, '')
+  else
+    let fg   = get(a:000, 0, '')
+    let bg   = get(a:000, 1, '')
+    let attr = get(a:000, 2, '')
+  end
+
+  let cmd = 'hi! ' . a:name
+  if !empty(fg)
+    let cmd .= ' guifg=' . fg
+  end
+  if !empty(bg)
+    let cmd .= ' guibg=' . bg
+  end
+  if !empty(attr)
+    let cmd .= ' gui=' . attr
+  end
+  execute cmd
+endfunc
+
 " Colors                                                                     {{{
 
 let s:black0    = '#000000'
@@ -53,8 +84,8 @@ let s:text_colors = {
 \ 'Special': '#9c5fff',
 \}
 for key in keys(s:text_colors)
-  call hi#('Text' . key, s:text_colors[key], '', '')
-  call hi#('Bold' . key, s:text_colors[key], '', 'bold')
+  call s:_('Text' . key, s:text_colors[key], '', '')
+  call s:_('Bold' . key, s:text_colors[key], '', 'bold')
 endfor
 
 " }}}
@@ -120,59 +151,59 @@ let theme.folded_fg             = '#999999'
 " }}}
 " General UI                                                                 {{{
 
-call hi#('Normal',           theme.fg,        theme.bg)
-call hi#('EndOfBuffer',      theme.fg_widget, theme.bg)
-call hi#('NormalPopup',      theme.fg,        theme.bg_subtle)
-call hi#('NormalPopover',    theme.fg,        theme.bg_popover)
+call s:_('Normal',           theme.fg,        theme.bg)
+call s:_('EndOfBuffer',      theme.fg_widget, theme.bg)
+call s:_('NormalPopup',      theme.fg,        theme.bg_subtle)
+call s:_('NormalPopover',    theme.fg,        theme.bg_popover)
 
-call hi#('Cursor',           '', theme.base,  'reverse')
-call hi#('SecondaryCursor',  '', theme.bg_hl, 'none')
+call s:_('Cursor',           '', theme.base,  'reverse')
+call s:_('SecondaryCursor',  '', theme.bg_hl, 'none')
 
-call hi#('CursorLine',       '',              theme.bg_verysubtle)
-call hi#('CursorColumn',     '',              theme.bg_verysubtle)
-call hi#('CursorLineNr',     theme.hl,        theme.bg_verysubtle, 'none')
-call hi#('LineNr',           theme.fg_widget, theme.bg_widget, 'none')
+call s:_('CursorLine',       '',              theme.bg_verysubtle)
+call s:_('CursorColumn',     '',              theme.bg_verysubtle)
+call s:_('CursorLineNr',     theme.hl,        theme.bg_verysubtle, 'none')
+call s:_('LineNr',           theme.fg_widget, theme.bg_widget, 'none')
 
-call hi#('TermCursor',       theme.bg,        'none',            'reverse')
-call hi#('TermCursorNC',     theme.fg_hl,     'none',            'reverse')
-call hi#('TermNormal',       theme.bg,        theme.base,    '')
-call hi#link('TermNormalNC', 'TermNormal')
+call s:_('TermCursor',       theme.bg,        'none',            'reverse')
+call s:_('TermCursorNC',     theme.fg_hl,     'none',            'reverse')
+call s:_('TermNormal',       theme.bg,        theme.base,    '')
+hi! link TermNormalNC TermNormal
 
 
-call hi#('Visual',         theme.selection)
-call hi#('LastVisual',     '',                  theme.bg_selection_dark, '')
-call hi#('WildMenu',       theme.fg,            theme.bg_selection)
-call hi#('StatusLine',     theme.fg_light,      theme.bg_dark,          'none')
-call hi#('StatusLineNC',   theme.fg_lighter,    theme.bg_dark,          'none')
-call hi#('StatusLinePart', theme.fg_widget_alt, theme.bg_widget_alt,     'bold')
-call hi#('StatusLinePartNC', theme.fg_widget_alt_nc, theme.bg_widget_alt_nc,     'bold')
-call hi#('Separator',      '#4c4c4c',           'none',                  '')
-call hi#('VertSplit',      theme.fg_subtle,     theme.bg_widget,         'none')
+call s:_('Visual',         theme.selection)
+call s:_('LastVisual',     '',                  theme.bg_selection_dark, '')
+call s:_('WildMenu',       theme.fg,            theme.bg_selection)
+call s:_('StatusLine',     theme.fg_light,      theme.bg_dark,          'none')
+call s:_('StatusLineNC',   theme.fg_lighter,    theme.bg_dark,          'none')
+call s:_('StatusLinePart', theme.fg_widget_alt, theme.bg_widget_alt,     'bold')
+call s:_('StatusLinePartNC', theme.fg_widget_alt_nc, theme.bg_widget_alt_nc,     'bold')
+call s:_('Separator',      '#4c4c4c',           'none',                  '')
+call s:_('VertSplit',      theme.fg_subtle,     theme.bg_widget,         'none')
 
-call hi#('Pmenu',            theme.fg_overlay, theme.bg_overlay)
-call hi#('PmenuSel',         theme.hl_fg,      theme.hl)
-call hi#('PmenuSbar',        '',       theme.bg_dark)
-call hi#('PmenuThumb',       '#666660', '#666660')
+call s:_('Pmenu',            theme.fg_overlay, theme.bg_overlay)
+call s:_('PmenuSel',         theme.hl_fg,      theme.hl)
+call s:_('PmenuSbar',        '',       theme.bg_dark)
+call s:_('PmenuThumb',       '#666660', '#666660')
 
 if exists('&pumblend')
   set pumblend=20
 end
 
-call hi#('Terminal',         s:white,  s:black0, '')
+call s:_('Terminal',         s:white,  s:black0, '')
 
 
-call hi#('Folded',           'none',          theme.bg_verysubtle,  'none')
-call hi#('FoldColumn',       theme.fg_subtle, theme.bg_widget,      '')
-call hi#('SignColumn',       '',              theme.bg_widget, '')
-call hi#('ColorColumn',      '',              theme.bg_widget, '')
+call s:_('Folded',           'none',          theme.bg_verysubtle,  'none')
+call s:_('FoldColumn',       theme.fg_subtle, theme.bg_widget,      '')
+call s:_('SignColumn',       '',              theme.bg_widget, '')
+call s:_('ColorColumn',      '',              theme.bg_widget, '')
 
 
-call hi#('IndentGuidesEven', theme.fg_widget, '', '')
-call hi#('IndentGuidesOdd',  theme.fg_widget, '', '')
+call s:_('IndentGuidesEven', theme.fg_widget, '', '')
+call s:_('IndentGuidesOdd',  theme.fg_widget, '', '')
 
-call hi#('TabLine',          s:white,       s:black1, 'bold')
-call hi#('TabLineSel',       s:gh_link,     s:black1, 'bold')
-call hi#('TabLineFill',      'none',        s:black1, 'bold')
+call s:_('TabLine',          s:white,       s:black1, 'bold')
+call s:_('TabLineSel',       s:gh_link,     s:black1, 'bold')
+call s:_('TabLineFill',      'none',        s:black1, 'bold')
 
 let s:bg_current = theme.bg
 let s:bg_visible = theme.bg_subtle
@@ -180,48 +211,47 @@ let s:bg_other   = s:black1
 
 let s:bg_accent = '#f1e05a'
 
-call hi#('BufferCurrent',     s:gh_link,        s:bg_current, 'bold')
-call hi#('BufferVisible',     s:gh_grey,        s:bg_visible, 'bold')
-call hi#('Buffer',            s:white,          s:bg_other, 'bold')
-call hi#('BufferCurrentMod',  s:yellow,         s:bg_current, 'bold')
-call hi#('BufferVisibleMod',  s:darkyellow,     s:bg_visible, 'bold')
-call hi#('BufferMod',         s:darkyellow,     s:bg_other, 'bold')
-call hi#('BufferSignCurrent', theme.fg_widget_dark, s:bg_current, 'none')
-call hi#('BufferSignVisible', theme.fg_widget_dark, s:bg_visible, 'none')
-call hi#('BufferSign',        theme.fg_widget_dark, s:bg_other, 'none')
-call hi#('BufferPart',        s:gh_info_fg,     s:gh_info_bg0, 'bold')
+call s:_('BufferCurrent',     s:gh_link,        s:bg_current, 'bold')
+call s:_('BufferVisible',     s:gh_grey,        s:bg_visible, 'bold')
+call s:_('Buffer',            s:white,          s:bg_other, 'bold')
+call s:_('BufferCurrentMod',  s:yellow,         s:bg_current, 'bold')
+call s:_('BufferVisibleMod',  s:darkyellow,     s:bg_visible, 'bold')
+call s:_('BufferMod',         s:darkyellow,     s:bg_other, 'bold')
+call s:_('BufferSignCurrent', theme.fg_widget_dark, s:bg_current, 'none')
+call s:_('BufferSignVisible', theme.fg_widget_dark, s:bg_visible, 'none')
+call s:_('BufferSign',        theme.fg_widget_dark, s:bg_other, 'none')
+call s:_('BufferPart',        s:gh_info_fg,     s:gh_info_bg0, 'bold')
 
 " }}}
 " Search, Highlight, Conceal, Messages                                               {{{
 
-call hi#('Search',          'none', s:gh_search,      'none')
-call hi#('IncSearch',       'none', s:gh_search_dark, 'none')
-call hi#('IncSearchCursor', '',     '',               'reverse')
+call s:_('Search',          'none', s:gh_search,      'none')
+call s:_('IncSearch',       'none', s:gh_search_dark, 'none')
+call s:_('IncSearchCursor', '',     '',               'reverse')
 
-call hi#('Conceal',         theme.fg_conceal, 'none',    '')
-call hi#('SpecialKey',      '#333333',        'none',    '')
-call hi#('NonText',         theme.fg_subtle,  '',        'bold')
-call hi#('MatchParen',      '',               '#BCE3FF', 'none')
-call hi#('SpecialOpt',      '#868680',        '#32363a', '')
-call hi#('Whitespace',      '#8f9aa9',        '',        '')
+call s:_('Conceal',         theme.fg_conceal, 'none',    '')
+call s:_('SpecialKey',      '#333333',        'none',    '')
+call s:_('NonText',         theme.fg_subtle,  '',        'bold')
+call s:_('MatchParen',      '',               '#BCE3FF', 'none')
+call s:_('SpecialOpt',      '#868680',        '#32363a', '')
+call s:_('Whitespace',      '#8f9aa9',        '',        '')
 
 
 
-call hi#('AutoHL',          '',     theme.bg,  'none')
-call hi#('Highlight',       'none', theme.bg_selection_light,       'none')
-call hi#('HighlightSubtle', 'none', theme.bg_selection_very_light, 'none')
+call s:_('AutoHL',          '',     theme.bg,  'none')
+call s:_('Highlight',       'none', theme.bg_selection_light,       'none')
+call s:_('HighlightSubtle', 'none', theme.bg_selection_very_light, 'none')
 
-call hi#('Key',             '#799d6a', '', '')
-call hi#('Question',        '#65C254', '', '',     'Green', '')
-call hi#('Todo',            '#3b84ea', 'none', 'bold')
+call s:_('Key',             '#799d6a', '', '')
+call s:_('Question',        '#65C254', '', '',     'Green', '')
+call s:_('Todo',            '#3b84ea', 'none', 'bold')
 
-call hi#('Directory',       theme.fg, '',     'bold')
-call hi#('Section',         '#3365CE', '',     'bold')
-" call hi#('Directory',       '#3365CE', '',     'bold')
-" call hi#('Title',           '#3365CE', '',     'bold')
-hi! link Title Special
+call s:_('Directory',       theme.fg, '',     'bold')
+call s:_('Section',         '#3365CE', '',     'bold')
+call s:_('Title',           '#3365CE', '',     'bold')
+" call s:_('Directory',       '#3365CE', '',     'bold')
 
-call hi#('Bold', '', '', 'bold')
+call s:_('Bold', '', '', 'bold')
 
 hi! link Msg        TextSuccess
 hi! link MoreMsg    TextInfo
@@ -233,121 +263,120 @@ hi! link ModeMsg    TextSpecial
 " }}}
 " Main Syntax                                                               {{{1
 
-call hi#('Tag',                  s:gh_url, '',        'underline')
-call hi#('Link',                 s:gh_url, '',        'underline')
-call hi#('URL',                  s:gh_url, '',        'underline')
+call s:_('Tag',                  s:gh_url, '',        'underline')
+call s:_('Link',                 s:gh_url, '',        'underline')
+call s:_('URL',                  s:gh_url, '',        'underline')
 
-call hi#('Comment',              s:gh_grey, '',        '')
-call hi#('CommentBold',          s:gh_grey, '',        'bold')
-call hi#('SpecialComment',       '#7597c6', '',        'bold')
+call s:_('Comment',              s:gh_grey, '',        '')
+call s:_('CommentBold',          s:gh_grey, '',        'bold')
+call s:_('SpecialComment',       '#7597c6', '',        'bold')
 hi! link CommentLabel   CommentBold
 hi! link CommentSection CommentBold
 hi! link Noise Comment
 
-call hi#('Global',               s:gh_blue1, '',        'none')
-call hi#('PreProc',              s:gh_blue1, '',        'none')
-call hi#('Macro',                s:gh_blue1, '',        'bold')
-call hi#('Define',               s:gh_blue1, '',        'bold')
-call hi#('PreCondit',            s:gh_blue1, '',        'bold')
-call hi#('Include',              s:gh_blue1, '',        'bold')
+call s:_('Global',               s:gh_blue1, '',        'none')
+call s:_('PreProc',              s:gh_blue1, '',        'none')
+call s:_('Macro',                s:gh_blue1, '',        'bold')
+call s:_('Define',               s:gh_blue1, '',        'bold')
+call s:_('PreCondit',            s:gh_blue1, '',        'bold')
+call s:_('Include',              s:gh_blue1, '',        'bold')
 
-call hi#('Repeat',               s:gh_red, '',        '')
-call hi#('Keyword',              s:gh_red, '',        '')
-call hi#('Statement',            s:gh_red, '',        'none')
-call hi#('Label',                s:gh_red, '',        '')
+call s:_('Repeat',               s:gh_red, '',        '')
+call s:_('Keyword',              s:gh_red, '',        '')
+call s:_('Statement',            s:gh_red, '',        'none')
+call s:_('Label',                s:gh_red, '',        '')
 
-call hi#('Operator',             s:gh_blue1, '',        '')
-"call hi#('Operator',             '#94afff', '',        '')
+call s:_('Operator',             s:gh_blue1, '',        '')
+"call s:_('Operator',             '#94afff', '',        '')
 
-call hi#('Constant',             s:gh_blue1, '',        'none')
-call hi#('Number',               s:gh_blue1, '',        'none')
-call hi#('Float',                s:gh_blue1, '',        'none')
-call hi#('Boolean',              s:gh_blue1, '',        'none')
-call hi#('Enum',                 s:gh_blue1, '',        'none')
+call s:_('Constant',             s:gh_blue1, '',        'none')
+call s:_('Number',               s:gh_blue1, '',        'none')
+call s:_('Float',                s:gh_blue1, '',        'none')
+call s:_('Boolean',              s:gh_blue1, '',        'none')
+call s:_('Enum',                 s:gh_blue1, '',        'none')
 
-call hi#('Delimiter',            '#668799', '',        'none')
-call hi#('DelimiterAlt',         '#799033', '',        'none')
-call hi#('SpecialChar',          '#799d6a', '',        'bold')
+call s:_('Delimiter',            '#668799', '',        'none')
+call s:_('DelimiterAlt',         '#799033', '',        'none')
+call s:_('SpecialChar',          '#799d6a', '',        'bold')
 
-call hi#('String',               s:gh_blue0, '',        'none')
-call hi#('StringDelimiter',      '#032f62', '',        'bold')
+call s:_('String',               s:gh_blue0, '',        'none')
+call s:_('StringDelimiter',      '#032f62', '',        'bold')
 
-call hi#('Character',            '#238fff', '',        'bold')
-
-
-call hi#('SpecialIdentifier',    '#9c5fff', '',        'none')
-
-call hi#('Special',              '#a755df', '',        'none')
-call hi#('SpecialBold',          '#a755df', '',        'bold')
-call hi#('SpecialDelimiter',     '#a040af', '',        'none')
+call s:_('Character',            '#238fff', '',        'bold')
 
 
-call hi#('Identifier',           theme.fg,  '',        'none')
-call hi#('Variable',             '#ffe790', '',        'none')
-call hi#('Argument',             theme.fg,  '',        'none')
+call s:_('SpecialIdentifier',    '#9c5fff', '',        'none')
 
-call hi#('Function',             s:gh_purple, '',        'none')
-call hi#('Method',               s:gh_purple, '',        'bold')
-
-call hi#('Symbol',               s:gh_blue1, '',        'none')
-call hi#('Control',              s:gh_blue1, '',        'none')
-call hi#('PredefinedIdentifier', s:gh_blue1, '',        'none')
-call hi#('Predefined',           s:gh_blue1, '',        'none')
-
-call hi#('StaticFunc',           '#ffb964', '',        'none')
-call hi#('Property',             s:gh_orange, '',        'none')
+call s:_('Special',              '#a755df', '',        'none')
+call s:_('SpecialBold',          '#a755df', '',        'bold')
+call s:_('SpecialDelimiter',     '#a040af', '',        'none')
 
 
-call hi#('Type',                 s:gh_red, '',        'none')
-call hi#('StorageClass',         s:gh_red, '',        'none')
-call hi#('Class',                s:gh_red, '',        'none')
-call hi#('Structure',            s:gh_red, '',        'none')
-call hi#('Typedef',              s:gh_red, '',        'none')
+call s:_('Identifier',           theme.fg,  '',        'none')
+call s:_('Variable',             '#ffe790', '',        'none')
+call s:_('Argument',             theme.fg,  '',        'none')
 
-call hi#('Regexp',               '#dd0093', 'none',        'none')
-call hi#('RegexpSpecial',        '#a40073', 'none',        'none')
-call hi#('RegexpDelimiter',      '#540063', 'none',        'bold')
-call hi#('RegexpKey',            '#5f0041', 'none',        'bold')
+call s:_('Function',             s:gh_purple, '',        'none')
+call s:_('Method',               s:gh_purple, '',        'bold')
+
+call s:_('Symbol',               s:gh_blue1, '',        'none')
+call s:_('Control',              s:gh_blue1, '',        'none')
+call s:_('PredefinedIdentifier', s:gh_blue1, '',        'none')
+call s:_('Predefined',           s:gh_blue1, '',        'none')
+
+call s:_('StaticFunc',           '#ffb964', '',        'none')
+call s:_('Property',             s:gh_orange, '',        'none')
+
+
+call s:_('Type',                 s:gh_red, '',        'none')
+call s:_('StorageClass',         s:gh_red, '',        'none')
+call s:_('Class',                s:gh_red, '',        'none')
+call s:_('Structure',            s:gh_red, '',        'none')
+call s:_('Typedef',              s:gh_red, '',        'none')
+
+call s:_('Regexp',               '#dd0093', 'none',        'none')
+call s:_('RegexpSpecial',        '#a40073', 'none',        'none')
+call s:_('RegexpDelimiter',      '#540063', 'none',        'bold')
+call s:_('RegexpKey',            '#5f0041', 'none',        'bold')
 
 " }}}
 " Diff                                                                       {{{
 
-call hi#('diffLine',    s:gh_grey, s:gh_info_bg1, 'none')
-call hi#('diffSubName', s:gh_grey, s:gh_info_bg1, 'none')
+call s:_('diffLine',    s:gh_grey, s:gh_info_bg1, 'none')
+call s:_('diffSubName', s:gh_grey, s:gh_info_bg1, 'none')
 
 hi! clear DiffAdd
 hi! clear DiffChange
 hi! clear DiffText
 hi! clear DiffDelete
 
-call hi#('DiffAdd',      '',             s:gh_add_bg2)
-call hi#('DiffChange',   '',             s:gh_add_bg2)
-call hi#('DiffText',     '',             s:gh_add_bg0)
-call hi#('DiffDelete',   '',             s:gh_danger_bg1)
+call s:_('DiffAdd',      '',             s:gh_add_bg2)
+call s:_('DiffChange',   '',             s:gh_add_bg2)
+call s:_('DiffText',     '',             s:gh_add_bg0)
+call s:_('DiffDelete',   '',             s:gh_danger_bg1)
 
-call hi#('DiffAdded',    theme.fg_light, s:gh_add_bg1)
-call hi#('DiffModified', theme.fg_light, s:gh_info_bg0)
-call hi#('DiffRemoved',  theme.fg_light, s:gh_danger_bg0)
+call s:_('DiffAdded',    theme.fg_light, s:gh_add_bg1)
+call s:_('DiffModified', theme.fg_light, s:gh_info_bg0)
+call s:_('DiffRemoved',  theme.fg_light, s:gh_danger_bg0)
 
-call hi#('DiffAddedSubtle',    s:gh_add_fg, s:gh_add_bg1)
-call hi#('DiffModifiedSubtle', s:gh_info_fg, s:gh_info_bg0)
-call hi#('DiffRemovedSubtle',  s:gh_danger_fg, s:gh_danger_bg0)
+call s:_('DiffAddedSubtle',    s:gh_add_fg, s:gh_add_bg1)
+call s:_('DiffModifiedSubtle', s:gh_info_fg, s:gh_info_bg0)
+call s:_('DiffRemovedSubtle',  s:gh_danger_fg, s:gh_danger_bg0)
 
 "                                                                            }}}
 " Additionnal/Common groups                                         {{{1
 
-call hi#('DbgCurrent',           '#DEEBFE', '#345FA8', '')
-call hi#('DbgBreakPt',           '',        '#4F0037', '')
+call s:_('DbgCurrent',           '#DEEBFE', '#345FA8', '')
+call s:_('DbgBreakPt',           '',        '#4F0037', '')
 
 " Jumping around {{{
 
-call hi#('PreciseJumpTarget',       '#B9ED67', '#405026', '' )
-call hi#('EasyMotionTargetDefault', '#ff0000', '', 'bold')
+call s:_('PreciseJumpTarget',       '#B9ED67', '#405026', '' )
+call s:_('EasyMotionTargetDefault', '#ff0000', '', 'bold')
 hi!  link Sneak                  EasyMotionTargetDefault
 hi!  link SneakPluginTarget      EasyMotionTargetDefault
 hi!  link SneakStreakTarget      EasyMotionTargetDefault
 hi!  link SneakStreakMask        EasyMotionShadeDefault
-call hi#('SneakStreakMask', hi#('EasyMotionShadeDefault'))
 
 " }}}
 

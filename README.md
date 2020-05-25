@@ -6,13 +6,9 @@
 All other github colorschemes fail to capture the real github theme. This one
 comes as close as I could take it.
 
-**Warning**: I used one of my custom libraries to implement it, therefore you
-need to install it as well :/ (yes I know it sucks)
-
 ## Install
 
 ```vim
-Plug 'romgrk/lib.kom'
 Plug 'romgrk/github-light.vim'
 ```
 
