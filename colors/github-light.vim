@@ -54,7 +54,8 @@ let s:gh_orange = '#e98642'
 let s:gh_blue0  = '#0d33a5'
 let s:gh_blue1  = '#2076d8'
 let s:gh_purple = '#6f42c1'
-let s:gh_url    = '#80a0ff'
+" let s:gh_url    = '#80a0ff'
+let s:gh_url    = '#678CFA'
 
 let s:gh_search      = '#FFEEB9'
 let s:gh_search_dark = '#EDB34D'
@@ -72,19 +73,6 @@ let s:gh_danger_fg  = '#c03545'
 let s:gh_danger_bg0 = '#ffdce0'
 let s:gh_danger_bg1 = '#ffeef0'
 
-
-let s:text_colors = {
-\ 'Info':    '#599eff',
-\ 'Success': '#5faf00',
-\ 'Warning': '#ff8700',
-\ 'Debug':   '#f0c904',
-\ 'Error':   '#ef2021',
-\ 'Special': '#9c5fff',
-\}
-for key in keys(s:text_colors)
-  call s:_('Text' . key, s:text_colors[key], '', '')
-  call s:_('Bold' . key, s:text_colors[key], '', 'bold')
-endfor
 
 " }}}
 " Theme                                                                      {{{
@@ -130,9 +118,6 @@ let theme.bg_selection          = '#d7d4ef'
 let theme.bg_selection_dark     = '#d7d4ef'
 let theme.bg_selection_light    = '#deebfe'
 let theme.bg_selection_very_light = '#e9f2ff'
-let theme.selection_dark        = ['none', '#d7d4ef']
-let theme.selection             = ['none', '#d7d4ef']
-let theme.selection_light       = ['none', '#d7d4ef']
 
 "let theme.insensitive          = '#515a5a'
 let theme.unfocused_fg          = '#949796'
@@ -148,6 +133,20 @@ let theme.folded_fg             = '#999999'
 
 " }}}
 " General UI                                                                 {{{
+
+let s:text_colors = {
+\ 'Normal':  theme.fg,
+\ 'Info':    '#599eff',
+\ 'Success': '#5faf00',
+\ 'Warning': '#ff8700',
+\ 'Debug':   '#f0c904',
+\ 'Error':   '#ef2021',
+\ 'Special': '#9c5fff',
+\}
+for key in keys(s:text_colors)
+  call s:_('Text' . key, s:text_colors[key], '', '')
+  call s:_('Bold' . key, s:text_colors[key], '', 'bold')
+endfor
 
 call s:_('Normal',           theme.fg,        theme.bg)
 call s:_('EndOfBuffer',      theme.fg_widget, theme.bg)
@@ -168,7 +167,8 @@ call s:_('TermNormal',       theme.bg,        theme.base,    '')
 hi! link TermNormalNC TermNormal
 
 
-call s:_('Visual',         theme.selection)
+call s:_('Visual',         '', theme.bg_selection)
+call s:_('VisualBold',     '', theme.bg_selection, 'bold')
 call s:_('LastVisual',     '',                  theme.bg_selection_dark, '')
 call s:_('WildMenu',       theme.fg,            theme.bg_selection)
 call s:_('StatusLine',     theme.fg_light,      theme.bg_dark,          'none')
@@ -180,6 +180,7 @@ call s:_('VertSplit',      theme.fg_subtle,     theme.bg_widget,         'none')
 
 call s:_('Pmenu',            theme.fg_overlay, theme.bg_overlay)
 call s:_('PmenuSel',         theme.hl_fg,      theme.hl)
+call s:_('PmenuSelBold',     theme.hl_fg,      theme.hl, 'bold')
 call s:_('PmenuSbar',        '',       theme.bg_dark)
 call s:_('PmenuThumb',       '#666660', '#666660')
 
@@ -223,8 +224,8 @@ call s:_('BufferPart',        s:gh_info_fg,     s:gh_info_bg0, 'bold')
 " }}}
 " Search, Highlight, Conceal, Messages                                               {{{
 
-call s:_('Search',          'none', s:gh_search,      'none')
-call s:_('IncSearch',       'none', s:gh_search_dark, 'none')
+call s:_('Search',          '', s:gh_search,      'none')
+call s:_('IncSearch',       '', s:gh_search_dark, 'none')
 call s:_('IncSearchCursor', '',     '',               'reverse')
 
 call s:_('Conceal',         theme.fg_conceal, 'none',    '')
@@ -244,7 +245,8 @@ call s:_('Key',             '#799d6a', '', '')
 call s:_('Question',        '#65C254', '', '',     'Green', '')
 call s:_('Todo',            '#3b84ea', 'none', 'bold')
 
-call s:_('Directory',       theme.fg, '',     'bold')
+call s:_('File',            theme.fg,  '',     'bold')
+call s:_('Directory',       '#3365CE', '',     'bold')
 call s:_('Section',         '#3365CE', '',     'bold')
 call s:_('Title',           '#3365CE', '',     'bold')
 " call s:_('Directory',       '#3365CE', '',     'bold')
@@ -255,6 +257,7 @@ hi! link Msg        TextSuccess
 hi! link MoreMsg    TextInfo
 hi! link WarningMsg TextWarning
 hi! link ErrorMsg   TextError
+hi! link Error      TextError
 hi! link ModeMsg    TextSpecial
 
 
@@ -357,9 +360,9 @@ call s:_('DiffAdded',    theme.fg_light, s:gh_add_bg1)
 call s:_('DiffModified', theme.fg_light, s:gh_info_bg0)
 call s:_('DiffRemoved',  theme.fg_light, s:gh_danger_bg0)
 
-call s:_('DiffAddedSubtle',    s:gh_add_fg, s:gh_add_bg1)
-call s:_('DiffModifiedSubtle', s:gh_info_fg, s:gh_info_bg0)
-call s:_('DiffRemovedSubtle',  s:gh_danger_fg, s:gh_danger_bg0)
+call s:_('DiffAddedGutter',    s:gh_add_fg, s:gh_add_bg1)
+call s:_('DiffModifiedGutter', s:gh_info_fg, s:gh_info_bg0)
+call s:_('DiffRemovedGutter',  s:gh_danger_fg, s:gh_danger_bg0)
 
 "                                                                            }}}
 " Additionnal/Common groups                                         {{{1
